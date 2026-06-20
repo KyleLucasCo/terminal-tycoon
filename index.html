@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terminal Tycoon</title>
+</head>
+<body>
+
+  <header class="macro-header-bar">
+    <div class="macro-stat-block"><span class="label">CASH:</span><span id="global-cash" class="neon-text-green">$0.00</span></div>
+    <div class="macro-stat-block"><span class="label">INFLUENCE:</span><span id="global-influence" class="neon-text-purple">0</span></div>
+    <div class="macro-stat-block"><span class="label">INNOVATION:</span><span id="global-innovation" class="neon-text-cyan">0</span></div>
+  </header>
+  
+  <div class="terminal-container">
+    
+    <!-- LEFT PANEL: Portfolio -->
+    <aside class="panel" id="portfolio-panel">
+      <h2>PORTFOLIO</h2>
+      <div class="divider"></div>
+      
+      <div class="business-card" id="card-fast-food">
+        <h3>Fast Food Chain</h3>
+        <p class="stat">CPS: $<span id="ff-cps">0.00</span></p>
+        <p class="stat">Lvl: <span id="ff-level">0</span></p>
+        <button id="btn-buy-ff" class="action-btn">Buy ($<span id="ff-cost">100</span>)</button>
+        <button id="btn-buy-ff-bulk" class="action-btn" style="margin-top: 8px;">Buy x5 ($<span id="ff-cost-bulk">0</span>)</button>
+      </div>
+
+      <div class="business-card" id="card-retail" style="margin-top: 20px;">
+        <h3>Retail Chain</h3>
+        <p class="stat">CPS: $<span id="retail-cps">0.00</span></p>
+        <p class="stat">Lvl: <span id="retail-level">0</span></p>
+        <button id="btn-buy-retail" class="action-btn">Buy ($<span id="retail-cost">500</span>)</button>
+        <button id="btn-buy-retail-bulk" class="action-btn" style="margin-top: 8px;">Buy x5 ($<span id="retail-cost-bulk">0</span>)</button>
+      </div>
+
+      <div class="business-card" id="card-media" style="margin-top: 20px;">
+        <h3>Media Empire</h3>
+        <p class="stat">Airtime Bandwidth: <span id="media-airtime">0</span> GHz</p>
+        <p class="stat">Networks Owned: <span id="media-networks">0</span></p>
+        <button id="btn-buy-media" class="action-btn">Acquire Network ($<span id="media-cost">5,000</span>)</button>
+        <button id="btn-buy-media-bulk" class="action-btn" style="margin-top: 8px;">Acquire x5 ($<span id="media-cost-bulk">0</span>)</button>
+      </div>
+
+      <div class="business-card" id="card-tech" style="margin-top: 20px;">
+        <h3>Tech Startup</h3>
+        <p class="stat">R&D Output: <span id="tech-ips">0</span> Innovation/s</p>
+        <p class="stat">Engineers Hired: <span id="tech-devs">0</span></p>
+        <button id="btn-buy-tech" class="action-btn">Hire Engineer ($<span id="tech-cost">25,000</span>)</button>
+        <button id="btn-buy-tech-bulk" class="action-btn" style="margin-top: 8px;">Hire x5 ($<span id="tech-cost-bulk">0</span>)</button>
+      </div>
+
+      <div class="business-card" id="card-equities" style="margin-top: 20px;">
+        <h3>EQUITIES MARKET</h3>
+        <div class="stock-row" style="display:flex; justify-content:space-between; gap:10px;">
+          <span>KORP</span>
+          <span>Own: <span id="stock-korp-owned">0</span></span>
+          <span>Price: <span id="stock-korp-price">$150.00</span></span>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btn-buy-korp-10" class="action-btn" style="flex:1; min-width:100px;">BUY 10</button>
+          <button id="btn-sell-korp-10" class="action-btn" style="flex:1; min-width:100px;">SELL 10</button>
+        </div>
+        <div class="stock-row" style="margin-top:12px; display:flex; justify-content:space-between; gap:10px;">
+          <span>VLTC</span>
+          <span>Own: <span id="stock-vltc-owned">0</span></span>
+          <span>Price: <span id="stock-vltc-price">$45.00</span></span>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btn-buy-vltc-10" class="action-btn" style="flex:1; min-width:100px;">BUY 10</button>
+          <button id="btn-sell-vltc-10" class="action-btn" style="flex:1; min-width:100px;">SELL 10</button>
+        </div>
+        <div class="stock-row" style="margin-top:12px; display:flex; justify-content:space-between; gap:10px;">
+          <span>SLDG</span>
+          <span>Own: <span id="stock-sldg-owned">0</span></span>
+          <span>Price: <span id="stock-sldg-price">$2.00</span></span>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btn-buy-sldg-10" class="action-btn" style="flex:1; min-width:100px;">BUY 10</button>
+          <button id="btn-sell-sldg-10" class="action-btn" style="flex:1; min-width:100px;">SELL 10</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER PANEL: Strategy Desk -->
+    <main class="panel" id="strategy-panel">
+      <h2>STRATEGY DESK</h2>
+      <div class="divider"></div>
+      
+      <div id="management-view">
+        <p id="awaiting-msg" class="sys-msg">> Awaiting business acquisition...</p>
+        
+        <!-- Fast Food Management UI -->
+        <div id="ff-management" class="hidden">
+          <h3 style="color: var(--neon-green);">> FAST FOOD LOGISTICS</h3>
+          <p class="stat">Supply Capacity: <span id="ff-capacity">0</span> /sec</p>
+          <p class="stat">Customer Demand: <span id="ff-demand">0</span> /sec</p>
+          <p class="stat">Actual Sales: <span id="ff-sales">0</span> /sec</p>
+          <div class="divider"></div>
+          <label style="display:block; margin-top:10px;">PRICE POINT: $<span id="ff-price-display">5.00</span></label>
+          <input type="range" id="ff-price-slider" min="2" max="15" step="0.25" value="5" style="width:100%; margin: 10px 0;">
+          
+          <!-- Campaign Interface -->
+          <button id="btn-ff-campaign" class="action-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">
+            LAUNCH LIVE AD CAMPAIGN ($150)
+          </button>
+          
+          <!-- Toggle Manager Interface -->
+          <div id="ff-manager-control-box" class="hidden" style="margin-top: 15px; border: 1px dotted var(--neon-green); padding: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>SUPERVISOR MODE:</span>
+            <button id="btn-protocol-ff" class="action-btn" style="width: auto; margin-top: 0; padding: 4px 10px;">MODE: OFF</button>
+          </div>
+          <button id="btn-hire-ff-supervisor" class="action-btn" style="border-color: var(--neon-green); color: var(--neon-green);">Hire Shift Supervisor ($1,000)</button>
+        </div>
+
+        <!-- Retail Management UI -->
+        <div id="retail-management" class="hidden" style="margin-top: 20px;">
+          <h3 style="color: #00bfff">> RETAIL DEPT LOGISTICS</h3>
+          <p class="stat">Inventory Capacity: <span id="retail-capacity">0</span> /sec</p>
+          <p class="stat">Foot Traffic Demand: <span id="retail-demand">0</span> /sec</p>
+          <p class="stat">Actual Sales: <span id="retail-sales">0</span> /sec</p>
+          <div class="divider"></div>
+          <label style="display:block; margin-top:10px;">PRICE MARKUP: $<span id="retail-price-display">25.00</span></label>
+          <input type="range" id="retail-price-slider" min="10" max="100" step="1" value="25" style="width:100%; margin: 10px 0;">
+          
+          <!-- Campaign Interface -->
+          <button id="btn-retail-campaign" class="action-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">
+            LAUNCH SOCIAL CAMPAIGN ($750)
+          </button>
+
+          <!-- Toggle Manager Interface -->
+          <div id="retail-manager-control-box" class="hidden" style="margin-top: 15px; border: 1px dotted #00bfff; padding: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>FLOOR MGR MODE:</span>
+            <button id="btn-protocol-retail" class="action-btn" style="width: auto; margin-top: 0; padding: 4px 10px;">MODE: OFF</button>
+          </div>
+          <button id="btn-hire-retail-manager" class="action-btn" style="border-color: #00bfff; color: #00bfff;">Hire Floor Manager ($5,000)</button>
+        </div>
+
+        <!-- Media Management UI -->
+        <div id="media-management" class="hidden" style="margin-top: 20px;">
+          <h3 style="color: #da70d6">> BROADCAST CENTER CONTROL</h3>
+          <p class="stat">Current Output: <span id="media-output-desc">Station Dark</span></p>
+          <div class="divider"></div>
+          <button id="btn-camp-propaganda" class="action-btn" style="margin-top: 5px;">Corporate Propaganda</button>
+          <button id="btn-camp-hype" class="action-btn" style="margin-top: 5px;">Consumer Hype</button>
+
+          <!-- Toggle Manager Interface -->
+          <div id="media-manager-control-box" class="hidden" style="margin-top: 15px; border: 1px dotted #da70d6; padding: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>EDITOR MODE:</span>
+            <button id="btn-protocol-media" class="action-btn" style="width: auto; margin-top: 0; padding: 4px 10px;">MODE: OFF</button>
+          </div>
+          <button id="btn-hire-media-manager" class="action-btn" style="border-color: #da70d6; color: #da70d6;">Hire Chief Editor ($25,000)</button>
+        </div>
+
+        <!-- Tech Management UI -->
+        <div id="tech-management" class="hidden" style="margin-top: 20px;">
+          <h3 style="color: #00ffff">> LAB R&D MAIN SPLIT</h3>
+          <p class="stat">Pipeline Status: <span style="color: var(--neon-green)">Processing Output...</span></p>
+
+          <!-- Toggle Manager Interface -->
+          <div id="tech-manager-control-box" class="hidden" style="margin-top: 15px; border: 1px dotted #00ffff; padding: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>CTO MODE:</span>
+            <button id="btn-protocol-tech" class="action-btn" style="width: auto; margin-top: 0; padding: 4px 10px;">MODE: OFF</button>
+          </div>
+          <button id="btn-hire-tech-manager" class="action-btn" style="border-color: #00ffff; color: #00ffff;">Hire CTO ($100,000)</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL: R&D Pipeline -->
+    <aside class="panel" id="macro-panel">
+      <h2>R&D PIPELINE</h2>
+      <div class="divider"></div>
+      <div id="tech-tree-container"></div>
+    </aside>
+
+  </div>
+
+  <div id="crisis-banner" class="hidden">⚠️ CRITICAL SYSTEM SHOCK DETECTED. CLICK TO OPEN EXECUTIVE DESK.</div>
+  <div id="crisis-modal" class="hidden">
+    <div class="modal-content">
+      <h3 id="event-title">[CRISIS ALERT]</h3><p id="event-desc"></p><p id="event-penalty"></p><div class="divider"></div>
+      <div class="modal-actions-grid"><button id="btn-event-opt1" class="action-btn"></button><button id="btn-event-opt2" class="action-btn"></button><button id="btn-event-opt3" class="action-btn"></button></div>
+      <button id="btn-close-modal" class="action-btn" style="border-color: var(--text-muted); color: var(--text-muted); margin-top: 15px;">Minimize Dashboard Control</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>
